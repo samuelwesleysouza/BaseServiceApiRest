@@ -1,4 +1,5 @@
-﻿using BaseServiceApiRest_Core.Entities;
+﻿using BaseServiceApiRest_Core.Domain.Services;
+using BaseServiceApiRest_Core.Entities;
 using BaseServiceApiRest_Core.Interfaces.IRepositories;
 using BaseServiceApiRest_Core.Interfaces.IServices;
 using BaseServiceApiRest_Core.Interfaces.Repositories.Base;
@@ -7,9 +8,9 @@ using BaseServiceApiRest_Core.MappingProfiles;
 using BaseServiceApiRest_Core.Services;
 using BaseServiceApiRest_Core.Transactions;
 using BaseServiceRestApi_Infrastructure.Data.Repositories;
-using Microsoft.AspNetCore.Diagnostics;
 using BaseServiceRestApi_Infrastructure.Data.Transactions;
-using BaseServiceApiRest_Core.Domain.Services;
+using BaseServiceApiRest_Core.Middleware;
+
 namespace BaseServiceApiRest.Configuration;
 
 public static class DependencyInjectionConfiguration

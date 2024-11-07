@@ -7,8 +7,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Data\Services\**" />
 	  <Compile Remove="Transactions\**" />
+	  <EmbeddedResource Remove="Data\Services\**" />
 	  <EmbeddedResource Remove="Transactions\**" />
+	  <None Remove="Data\Services\**" />
 	  <None Remove="Transactions\**" />
 	</ItemGroup>
 
@@ -18,11 +21,6 @@
 		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.2" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.2" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.2" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<!-- Pastas do projeto -->
-		<Folder Include="Data\Services\" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -7,6 +7,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Controllers\Base\BaseServiceApiRest.Controllers.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.2">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -19,6 +23,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\BaseServiceApiRest_Core\BaseServiceApiRest_Core.csproj" />
 		<ProjectReference Include="..\BaseServiceRestApi_Infrastructure\BaseServiceRestApi_Infrastructure.csproj" />
 	</ItemGroup>
 

@@ -1,5 +1,4 @@
-﻿
-using BaseServiceApiRest_Core.Entities;
+﻿using BaseServiceApiRest_Core.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;

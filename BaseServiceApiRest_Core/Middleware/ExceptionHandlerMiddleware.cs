@@ -3,56 +3,44 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Net;
 using System.Text.Json;
-using System.Threading.Tasks;
 
-namespace BaseServiceApiRest_Core.Middleware
+namespace BaseServiceApiRest_Core.Middleware;
+
+public class ExceptionHandlerMiddleware : IMiddleware
 {
-    public class ExceptionHandlerMiddleware
+    private ILogger<ExceptionHandlerMiddleware> _logger;
+    public ExceptionHandlerMiddleware(ILoggerFactory logger)
     {
-        private readonly RequestDelegate _next;
-        private readonly ILogger<ExceptionHandlerMiddleware> _logger;
+        _logger = logger.CreateLogger<ExceptionHandlerMiddleware>();
+    }
 
-        public ExceptionHandlerMiddleware(RequestDelegate next, ILogger<ExceptionHandlerMiddleware> logger)
+    public async Task InvokeAsync(HttpContext context, RequestDelegate next)
+    {
+        try
         {
-            _next = next;
-            _logger = logger;
+            await next(context);
         }
-
-        public async Task InvokeAsync(HttpContext context)
+        catch (HttpRequestException ex)
         {
-            try
-            {
-                await _next(context);
-            }
-            catch (HttpRequestException ex)
-            {
-                await HandleErrorMessage(context, ex);
-            }
-            catch (Exception ex) // Captura outras exceções
-            {
-                _logger.LogError(ex, "An unexpected error occurred.");
-                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                await context.Response.WriteAsync("An unexpected error occurred.");
-            }
+            await HandleErrorMessage(context, ex);
         }
+    }
+    private static async Task HandleErrorMessage(HttpContext context, HttpRequestException ex)
+    {
+        var statusCode = ex.StatusCode ?? HttpStatusCode.BadRequest;
 
-        private static async Task HandleErrorMessage(HttpContext context, HttpRequestException ex)
+        ProblemDetails problem = new()
         {
-            var statusCode = ex.StatusCode ?? HttpStatusCode.BadRequest;
+            Status = (int)statusCode,
+            Type = statusCode.ToString(),
+            Title = statusCode.ToString(),
+            Detail = ex.Message
+        };
+        context.Response.StatusCode = (int)statusCode;
+        context.Response.ContentType = "application/json";
 
-            ProblemDetails problem = new()
-            {
-                Status = (int)statusCode,
-                Type = statusCode.ToString(),
-                Title = statusCode.ToString(),
-                Detail = ex.Message
-            };
-            context.Response.StatusCode = (int)statusCode;
-            context.Response.ContentType = "application/json";
+        var json = JsonSerializer.Serialize(problem);
 
-            var json = JsonSerializer.Serialize(problem);
-
-            await context.Response.WriteAsync(json);
-        }
+        await context.Response.WriteAsync(json);
     }
 }
