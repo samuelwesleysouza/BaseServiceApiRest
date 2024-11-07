@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 
-namespace BaseServiceRestApi_Infrastructure.Data
+namespace BaseServiceRestApi_Infrastructure.Data.Context
 {
     public class BaseServiceRestApiContext : DbContext
     {
